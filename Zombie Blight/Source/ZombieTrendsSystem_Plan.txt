@@ -1,0 +1,216 @@
+# План системы динамики зомби-популяции (Zombie Trends System)
+
+## 1. Основные принципы
+- График активности как бесконечная лента
+- Ось X: игровое время (часы/дни)
+- Ось Y: относительная плотность зомби (0-100%)
+- Три режима масштаба: 48ч/10дней/1 сезон
+
+## 2. Генерация кривой
+1. Базовый уровень (20-40%)
+2. Температурные модификаторы:
+   - Экстремальный холод (< -40°C): -70%
+   - Сильный холод (-40°C до -20°C): -40%
+   - Умеренный холод (-20°C до 0°C): -20%
+   - Нормальная температура (0°C до 35°C): 100%
+   - Жара (35°C до 45°C): +15%
+   - Экстремальная жара (> 45°C): +30%
+3. Погодные эффекты:
+   - Гроза: +10% (звуковое привлечение)
+   - Дождь: -5% (замедление движения)
+   - Токсичные осадки: -5%
+4. Случайные аномалии:
+   - Импульсы (2-6ч): +10-30%
+   - Плато (1-4ч): 0% изменение
+   - Скачки: мгновенные ±5-15%
+
+## 3. Визуализация
+Пример графика:
+[День 1] ▁▁▃▄▅▆▇!(65%)▇▆▅▄▃▁▲(сейчас)
+[День 2] ▁▁▃▄▅▆▇▇▆▅▄▃▂▁▁▁▂▃▄▅▆▇
+
+## 4. Настройки сложности
+- Амплитуда: 0.8x (Easy) - 1.5x (Extreme)
+- Частота аномалий: 0.5x-2.0x
+
+## 5. Технические требования
+- Обновление каждые 15 игр. минут
+- Плавный скроллинг (1px/сек)
+- Маркеры:
+   ▲ - текущее время
+   ! - аномалия
+   ⏸ - плато
+
+## 6. Гибридная архитектура (Zombieland + Наш подход)
+
+### 6.1 Оптимизированная сетка
+[Унаследовано из Zombieland]
+- Локальный булевый массив zombieGrid[,] 
+- Быстрая проверка соседних клеток
+- Кэширование позиций спавна
+
+### 6.2 Улучшенный алгоритм плотности
+[Наш вклад]
+1. Базовый уровень: 
+   - Динамический расчет (20-40%)
+   - Seed-based генерация
+
+2. Модификаторы:
+   ```csharp
+   // Пример комбинирования подходов
+   float GetFinalDensity()
+   {
+       float density = BaseDensity;
+       
+       // Zombieland-стиль
+       density *= GetTimeModifier(); 
+       density *= GetWeatherModifier();
+       
+       // Наш подход
+       density += GetTrendValue(); // Из долгосрочного графика
+       density += GetAnomalyValue(); // Локальные аномалии
+       
+       return Mathf.Clamp(density, 0f, 1f);
+   }
+   ```
+
+### 6.3 Сравнение характеристик
+| Параметр        | Zombieland | Наш мод |
+|----------------|------------|---------|
+| Прогнозируемость | ❌ Нет     | ✅ 60 дней |
+| Визуализация    | ❌ Текст   | ✅ График |
+| Оптимизация     | ✅ Grid    | ✅ Grid+ |
+| Гибкость        | ❌ Жесткая | ✅ Настройки |
+
+### 7. Этапы реализации
+1. Адаптация ZombieGrid.cs
+2. Создание TrendCalculator.cs 
+3. Интеграция систем:
+   ```mermaid
+   graph LR
+       A[Zombieland Grid] --> B[Тренд-генератор]
+       B --> C[Спаун-менеджер]
+   ```
+4. Тестирование производительности
+
+### 8. Критические улучшения
+1. **Seed-based рандом**:
+   - Сохраняем предсказуемость
+   - Но добавляем "шумовой слой"
+
+2. **Ленивые вычисления**:
+   - Пересчет трендов раз в день
+   - Локальные аномалии - по требованию
+
+3. **Визуальный дебаг**:
+   ```csharp
+   if (Prefs.DevMode)
+       DrawDebugGrid();
+   ```
+
+### 9. Детализированная система очков зомби (Zombie Value System v3)
+
+#### 9.1 Окончательная формула расчета:
+```csharp
+public static int CalculateZombieValue(Pawn zombie)
+{
+    // 1. Базовые 500 очков
+    float value = 500f;
+    
+    // 2. Рыночная стоимость (без множителей)
+    value += zombie.MarketValue;
+    
+    // 3. Прямой множитель размера тела (как есть)
+    value *= zombie.BodySize;
+    
+    // 4. Множитель уровня (1.0, 1.2, 1.3...)
+    value *= 1f + (GetZombieLevel(zombie) * 0.15f);
+    
+    return Mathf.RoundToInt(value);
+}
+```
+
+#### 9.2 Примеры расчетов:
+| Тип существа | Размер тела | Уровень | Итоговые очки |
+|--------------|-------------|---------|---------------|
+| Человек      | 1.0         | 1       | 500 + (800 * 1.0 * 1.0) = 1300 |
+| Медведь      | 2.0         | 1       | 500 + (1200 * 2.0 * 1.0) = 2900 |
+| Заяц         | 0.5         | 2       | 500 + (150 * 0.5 * 1.2) = 590 |
+
+#### 9.3 Обновленные XML-настройки:
+```xml
+<ZombiePopulationSettings>
+  <baseZombieValue>500</baseZombieValue>
+  <maxZombies>300</maxZombies>
+  <levelMultiplier>0.15</levelMultiplier>
+  
+  <!-- Параметры деспавна -->
+  <minDespawnAgeTicks>60000</minDespawnAgeTicks> <!-- 1 день -->
+  <edgeDespawnBonus>0.1</edgeDespawnBonus>
+</ZombiePopulationSettings>
+```
+
+#### 9.4 Упрощенная сортировка для удаления:
+```csharp
+private List<ZombieRecord> GetRemovalPriorityList()
+{
+``csharp
+// Патч для WildAnimalSpawner.AnimalsCount
+[HarmonyPatch(typeof(WildAnimalSpawner), "get_AnimalsCount")]
+static class FixAnimalsCountPatch
+{    return activeZombies
+        .Where(z => z.ageTicks > ZombieSettings.minDespawnAgeTicks)
+        .OrderBy(z => z.currentValue) // Сначала слабые
+        .ThenBy(z => z.ageTicks)      // Затем старые
+        .ThenBy(z => z.edgeDistance)  // Ближе к краю
+        .ToList();
+}
+```
+
+#### 9.6 Визуализация в игре:
+```csharp
+public void DrawZombieValues()
+{
+    foreach (var z in activeZombies)
+    {
+        Vector2 pos = z.zombie.DrawPos.MapToUIPosition();
+        Rect rect = new Rect(pos.x - 50f, pos.y - 30f, 100f, 20f);
+        Widgets.Label(rect, $"{z.currentValue}pts (x{z.zombie.BodySize:F1})");
+    }
+}
+
+### 10. Чистая интеграция зомби-животных с системой фауны
+
+#### 10.1 Основные принципы:
+1. Зомби (любые) никогда не учитываются как часть экосистемы
+2. Наличие зомби не влияет на спавн обычных животных
+3. Зомби-животные обрабатываются отдельно от обычных
+
+#### 10.2 Ключевые Harmony-патчи:
+```csharp
+// Полностью исключаем зомби из подсчета животных
+[HarmonyPatch(typeof(WildAnimalSpawner), "get_AnimalsCount")]
+static class FixAnimalsCountPatch
+{
+    static bool Prefix(WildAnimalSpawner __instance, ref int __result)
+    {
+        __result = __instance.map.mapPawns.AllPawns
+            .Count(p => p.RaceProps.Animal && 
+                  !p.IsZombie());
+        return false;
+    }
+}
+```
+
+#### 10.3 Необходимые изменения в Defs:
+```xml
+<!-- В About/Defs для мода -->
+<HediffDef Name="BlightInfection" Class="Hediff_Zombie">
+  <excludeFromWildlife>true</excludeFromWildlife>
+</HediffDef>
+```
+
+#### 10.4 Гарантии работы системы:
+- Зомби не уменьшают лимит животных на карте
+- Животные спавнятся независимо от зомби
+- Все зомби учитываются только в системах мода

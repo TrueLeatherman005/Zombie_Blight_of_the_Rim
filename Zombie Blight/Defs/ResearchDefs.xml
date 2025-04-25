@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Исследование для блайт-оружия -->
+  <ResearchProjectDef>
+    <defName>BlightGrenadeResearch</defName>
+    <label>Blight weaponry</label>
+    <description>Research into weaponizing the blight infection into grenades and mortar shells.</description>
+    <baseCost>2000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <requiredResearch>
+      <li>Mortars</li>
+    </requiredResearch>
+    <tab>Security</tab>
+    <prerequisites>
+      <li>MicroelectronicsBasics</li>
+    </prerequisites>
+  </ResearchProjectDef>
+</Defs>

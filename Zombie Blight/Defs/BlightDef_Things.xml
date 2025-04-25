@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Специальный предмет: Блайтовая граната (вызывает облако заражающего газа) -->
+  <ThingDef ParentName="BaseGrenade">
+    <defName>Item_BlightGasGrenade</defName>
+    <label>blight gas grenade</label>
+    <description>A crude grenade filled with blight-infected gas. Explodes on impact, releasing a cloud that infects all living creatures in the area.</description>
+    <graphicData>
+      <texPath>Things/Item/Equipment/BlightGasGrenade</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>Grenades</li>
+    </thingCategories>
+    <statBases>
+      <Mass>0.4</Mass>
+      <MarketValue>70</MarketValue>
+      <ArmorPenetrationBlunt>0.12</ArmorPenetrationBlunt>
+      <Damage>10</Damage>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_LaunchProjectile</verbClass>
+        <defaultProjectile>Projectile_BlightGas</defaultProjectile>
+        <warmupTime>1.2</warmupTime>
+        <range>15.9</range>
+        <soundCast>Interact_Throw</soundCast>
+      </li>
+    </verbs>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+    <thingSetMakerTags>
+      <li>RewardStandardQuality</li>
+    </thingSetMakerTags>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+  </ThingDef>
+
+  <!-- Облако зараженного газа -->
+  <ThingDef ParentName="GasCloudBase">
+    <defName>Gas_BlightInfection</defName>
+    <label>blight infection cloud</label>
+    <description>A thick cloud of blight-infected gas that causes infection in living creatures.</description>
+    <comps>
+      <li Class="CompProperties_Gas">
+        <gas>BlightInfection</gas>
+        <durationTicks>1200</durationTicks> <!-- 20 секунд -->
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Минометный снаряд с зараженным газом -->
+  <ThingDef ParentName="BaseProjectile">
+    <defName>Projectile_BlightMortarShell</defName>
+    <label>blight gas shell</label>
+    <description>A mortar shell filled with blight-infected gas. Explodes on impact, releasing a large cloud that infects all living creatures in the area.</description>
+    <graphicData>
+      <texPath>Things/Projectile/MortarShell_Blight</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <speed>30</speed>
+      <damageAmountBase>25</damageAmountBase>
+      <explosionRadius>5.9</explosionRadius>
+      <explosionDelay>0</explosionDelay>
+      <expectedCover>0.3</expectedCover>
+      <flyOverhead>true</flyOverhead>
+      <ai_IsIncendiary>false</ai_IsIncendiary>
+    </projectile>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>5.9</explosiveRadius>
+        <explosiveExpandPerStackcount>0.7</explosiveExpandPerStackcount>
+        <explosionDamage>25</explosionDamage>
+        <explosionDamageDef>Bomb</explosionDamageDef>
+        <startWickOnDamageChance>1</startWickOnDamageChance>
+        <wickStarts>0.1</wickStarts>
+        <wickTime>1.5</wickTime>
+        <preExplosionSpawnThingDef>Gas_BlightInfection</preExplosionSpawnThingDef>
+        <postExplosionSpawnThingDef>Gas_BlightInfection</postExplosionSpawnThingDef>
+        <explosionSpawnChance>1</explosionSpawnChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Артиллерийский снаряд как предмет (боеприпас) -->
+  <ThingDef ParentName="BaseShell">
+    <defName>Shell_BlightArtillery</defName>
+    <label>blight artillery shell</label>
+    <description>A heavy artillery shell filled with blight-infected gas. Causes massive infection clouds upon explosion.</description>
+    <graphicData>
+      <texPath>Things/Item/Shell/BlightArtilleryShell</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingClass>AmmoThing</thingClass>
+    <thingCategories>
+      <li>Shells</li>
+    </thingCategories>
+    <statBases>
+      <Mass>8</Mass>
+      <MarketValue>180</MarketValue>
+      <StackLimit>10</StackLimit>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_AmmoUser">
+        <ammoDef>Shell_BlightArtillery</ammoDef>
+      </li>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>8</explosiveRadius>
+        <explosionDamage>40</explosionDamage>
+        <explosionDamageDef>Bomb</explosionDamageDef>
+        <startWickOnDamageChance>0.5</startWickOnDamageChance>
+        <preExplosionSpawnThingDef>Gas_BlightInfection</preExplosionSpawnThingDef>
+        <postExplosionSpawnThingDef>Gas_BlightInfection</postExplosionSpawnThingDef>
+        <explosionSpawnChance>1</explosionSpawnChance>
+        <explosionSpawnCount>3</explosionSpawnCount>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Ловушка с зараженным газом -->
+  <ThingDef ParentName="TrapBase">
+    <defName>BlightTrap</defName>
+    <label>blight trap</label>
+    <description>A crude trap that releases blight-infected gas when triggered. Can be constructed from blight gas shells.</description>
+    <graphicData>
+      <texPath>Things/Building/Trap/BlightTrap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <WorkToBuild>800</WorkToBuild>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <MarketValue>120</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>3.5</explosiveRadius>
+        <explosionDamage>15</explosionDamage>
+        <explosionDamageDef>Bomb</explosionDamageDef>
+        <startWickOnDamageChance>1</startWickOnDamageChance>
+        <preExplosionSpawnThingDef>Gas_BlightInfection</preExplosionSpawnThingDef>
+        <postExplosionSpawnThingDef>Gas_BlightInfection</postExplosionSpawnThingDef>
+        <explosionSpawnChance>1</explosionSpawnChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- WorkGiver для сбора слизи -->
+  <WorkGiverDef>
+    <defName>GatherBlightSlime</defName>
+    <label>gather blight slime</label>
+    <giverClass>ZombieBlight.WorkGiver_GatherBlightSlime</giverClass>
+    <workType>Hauling</workType>
+    <verb>gather</verb>
+    <gerund>gathering</gerund>
+    <priorityInType>50</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <!-- Job для сбора слизи -->
+  <JobDef>
+    <defName>GatherBlightSlime</defName>
+    <driverClass>ZombieBlight.JobDriver_GatherBlightSlime</driverClass>
+    <reportString>gathering blight slime.</reportString>
+  </JobDef>
+
+  
+
+</Defs>

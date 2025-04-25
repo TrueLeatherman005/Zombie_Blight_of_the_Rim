@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ThingDef>
+    <defName>BlightTrace</defName>
+    <thingClass>Thing</thingClass>
+        <category>Thing</category>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <drawerType>None</drawerType>
+    <selectable>false</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <rotatable>false</rotatable>
+    <tickerType>Normal</tickerType>
+    <stealable>false</stealable>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <comps>
+      <li Class="ZombieBlight.CompProperties_BlightTrace">
+        <baseStrength>20</baseStrength>
+        <decayRateBase>0.00083</decayRateBase> <!-- ~0.5 в час -->
+        <decayRateOutdoors>0.00166</decayRateOutdoors> <!-- В 2 раза быстрее на улице -->
+        <decayRateRain>0.00332</decayRateRain> <!-- В 4 раза быстрее под дождем -->
+        <decayRateHighTemp>0.00249</decayRateHighTemp> <!-- В 3 раза быстрее при высокой температуре -->
+      </li>
+    </comps>
+     </ThingDef>
+</Defs

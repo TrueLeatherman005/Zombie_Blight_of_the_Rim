@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ThinkTreeDef>
+    <defName>BlightZombie</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <!-- Emergency response - always check first -->
+        <li Class="ThinkNode_ConditionalMustKeepLyingDown">
+          <subNodes>
+            <li Class="JobGiver_KeepLyingDown"/>
+          </subNodes>
+        </li>
+        
+        <!-- Combat response - high priority -->
+        <li Class="JobGiver_AIFightEnemy">
+          <targetAcquireRadius>25</targetAcquireRadius>
+          <targetKeepRadius>30</targetKeepRadius>
+        </li>
+
+        <!-- Scent following - medium priority -->
+        <li Class="ZombieBlight.JobGiver_BlightTraceFollower" />
+        
+        <!-- Basic zombie behavior - lowest priority -->
+        <li Class="ZombieBlight.JobGiver_BlightZombieBehavior" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

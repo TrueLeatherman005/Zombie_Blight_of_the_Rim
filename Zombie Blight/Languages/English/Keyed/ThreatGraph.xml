@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+    <ZTG_Title>Zombie Threat Forecast</ZTG_Title>
+    <ZTG_DayLabel>Day</ZTG_DayLabel>
+    <ZTG_ThreatLabel>Threat</ZTG_ThreatLabel>
+    <ZTG_ExpandTip>Click to expand/collapse the graph</ZTG_ExpandTip>
+    <ZTG_CurrentTime>Current Time</ZTG_CurrentTime>
+    <ZTG_ForecastNote>Dotted lines show predicted threat levels</ZTG_ForecastNote>
+</LanguageData>
