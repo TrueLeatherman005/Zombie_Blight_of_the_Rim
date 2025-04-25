@@ -15,29 +15,29 @@ namespace ZombieBlight
     {
         private float progressPerTick = 0.00005f; // Базовая скорость прогрессии
         private float progress = 0f;
-        
+
         public override void CompTick()
         {
             base.CompTick();
-            
+
             if (parent is Corpse corpse)
             {
                 // Проверяем температуру
                 float temp = parent.AmbientTemperature;
-                float minTemp = corpse.InnerPawn.GetStatValue(StatDefOf.ComfortableTemperatureMin);
-                float maxTemp = corpse.InnerPawn.GetStatValue(StatDefOf.ComfortableTemperatureMax);
-                
+                float minTemp = corpse.InnerPawn.GetStatValue(StatDefOf.ComfyTemperatureMin);
+                float maxTemp = corpse.InnerPawn.GetStatValue(StatDefOf.ComfyTemperatureMax);
+
                 // Остановка при экстремальных температурах
-                if (temp < minTemp || temp > maxTemp) 
+                if (temp < minTemp || temp > maxTemp)
                     return;
-                
+
                 // Ускорение при оптимальной температуре
                 float tempMultiplier = 1f;
                 if (temp >= 15f && temp <= 30f)
                     tempMultiplier = 1.5f;
-                
+
                 progress += progressPerTick * tempMultiplier;
-                
+
                 // При достижении 100% начинаем воскрешение
                 if (progress >= 1f)
                 {
@@ -47,20 +47,21 @@ namespace ZombieBlight
                 }
             }
         }
-        
+
         public override void PostExposeData()
         {
             base.PostExposeData();
             Scribe_Values.Look(ref progress, "blightProgress", 0f);
         }
-        
+
         public float GetProgress()
         {
             return progress;
         }
-        
+
         public void SetProgress(float newProgress)
         {
             progress = newProgress;
         }
     }
+}
