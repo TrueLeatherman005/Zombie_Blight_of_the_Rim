@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Категория для предметов мода -->
+  <ThingCategoryDef>
+    <defName>BlightItems</defName>
+    <label>blight items</label>
+    <parent>Items</parent>
+  </ThingCategoryDef>
+
+  <!-- Filth_BlightSlime - Слизь как загрязнение -->
+  <ThingDef ParentName="BaseFilth">
+    <defName>Filth_BlightSlime</defName>
+    <label>blight slime</label>
+    <description>Virulent slime produced by zombies infected with the Blight. Can be collected to extract valuable resources, but poses an infection risk.</description>
+    <graphicData>
+      <texPath>Things/Filth/BlightSlime</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Beauty>-25</Beauty>
+      <Cleanliness>-5</Cleanliness>
+    </statBases>
+    <filth>
+      <disappearsInDays>15~20</disappearsInDays>
+      <rainWashes>false</rainWashes>
+      <cleaningWorkToReduceThickness>70</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+    </filth>
+   <comps>
+  <li Class="ZombieBlight.CompGatherableSlime"/>
+</comps>
+  </ThingDef>
+
+  <!-- Blight Slime Pack -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>Item_BlightSlimePack</defName>
+    <label>blight slime pack</label>
+    <description>A collection of virulent slime from a blight zombie. Can be obtained from zombie corpses with blight taint or collected from slime puddles. Can be processed to extract blight cells for medical and research purposes. Highly infectious - handle with care.</description>
+    <graphicData>
+      <texPath>Things/Item/BlightSlimePack</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Mass>0.5</Mass>
+      <Flammability>1.0</Flammability>
+      <DeteriorationRate>2.0</DeteriorationRate>
+      <MarketValue>10</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>BlightItems</li>
+    </thingCategories>
+    <stackLimit>75</stackLimit>
+  </ThingDef>
+
+  <!-- Blight Cells -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>Item_BlightCells</defName>
+    <label>blight concentrated cells</label>
+    <description>Isolated and stabilized cells from blight slime. Used to create serums and additives with various effects. In this form, they are not infectious but still require proper handling.</description>
+    <graphicData>
+      <texPath>Things/Item/BlightCells</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.3</Mass>
+      <Flammability>0.7</Flammability>
+      <DeteriorationRate>1.0</DeteriorationRate>
+      <MarketValue>25</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>BlightItems</li>
+    </thingCategories>
+    <stackLimit>75</stackLimit>
+  </ThingDef>
+
+  <!-- Blight Resistant Additive -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>Item_BlightResistantAdditive</defName>
+    <label>blight resistant additive</label>
+    <description>A processed food additive made from blight cells. When consumed, it grants temporary resistance to blight infection. Can be added to meals during cooking, to already prepared meals, or consumed directly.</description>
+    <graphicData>
+      <texPath>Things/Item/BlightResistantAdditive</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <statBases>
+      <WorkToMake>500</WorkToMake>
+      <Mass>0.3</Mass>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <MarketValue>15</MarketValue>
+      <Nutrition>0.1</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Processed</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <baseIngestTicks>120</baseIngestTicks>
+      <ingestSound>Meal_Eat</ingestSound>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestCommandString>Consume {0}</ingestCommandString>
+      <ingestReportString>Consuming {0}.</ingestReportString>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>Hediff_BlightResistance</hediffDef>
+          <severity>1.0</severity>
+        </li>
+      </outcomeDoers>
+      <nurseable>false</nurseable>
+    </ingestible>
+    <comps>
+      <li Class="ZombieBlight.CompProperties_BlightIngredient">
+        <hediffDef>Hediff_BlightResistance</hediffDef>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>BlightItems</li>
+    </thingCategories>
+    <techLevel>Industrial</techLevel>
+    <stackLimit>45</stackLimit>
+  </ThingDef>
+
+  <!-- Herbal Blight Cleanse Serum -->
+  <ThingDef ParentName="MedicineBase">
+    <defName>BlightCleanseSerum_Herbal</defName>
+    <label>herbal blight cleanse serum</label>
+    <description>A basic serum made from blight cells and herbal medicine. When administered, it adds +10% to current immunity levels from blight infection (up to 50%).</description>
+    <graphicData>
+      <texPath>Things/Item/BlightCleanseSerum_Herbal</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>25</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.7</Flammability>
+      <MedicalPotency>0.5</MedicalPotency>
+      <MedicalQualityMax>0.7</MedicalQualityMax>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Use {0} to treat blight infection</useLabel>
+        <useDuration>300</useDuration>
+      </li>
+      <li Class="CompProperties_TargetEffect">
+        <compClass>ZombieBlight.CompTargetEffect_BlightSerum</compClass>
+      </li>
+    </comps>
+    <techLevel>Industrial</techLevel>
+    <costList>
+      <Item_BlightCells>1</Item_BlightCells>
+      <MedicineHerbal>5</MedicineHerbal>
+    </costList>
+  </ThingDef>
+
+  <!-- Industrial Blight Cleanse Serum -->
+  <ThingDef ParentName="MedicineBase">
+    <defName>BlightCleanseSerum_Industrial</defName>
+    <label>industrial blight cleanse serum</label>
+    <description>An advanced serum made from blight cells and industrial medicine. When administered, it adds +30% to current immunity levels from blight infection (up to 90%).</description>
+    <graphicData>
+      <texPath>Things/Item/BlightCleanseSerum_Industrial</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>60</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.7</Flammability>
+      <MedicalPotency>0.8</MedicalPotency>
+      <MedicalQualityMax>0.9</MedicalQualityMax>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Use {0} to treat blight infection</useLabel>
+        <useDuration>240</useDuration>
+      </li>
+      <li Class="CompProperties_TargetEffect">
+        <compClass>ZombieBlight.CompTargetEffect_BlightSerum</compClass>
+      </li>
+    </comps>
+    <techLevel>Industrial</techLevel>
+    <costList>
+      <Item_BlightCells>1</Item_BlightCells>
+      <MedicineIndustrial>1</MedicineIndustrial>
+    </costList>
+  </ThingDef>
+
+  <!-- Glitterworld Blight Cleanse Serum -->
+  <ThingDef ParentName="MedicineBase">
+    <defName>BlightCleanseSerum_Glitter</defName>
+    <label>glitterworld blight cleanse serum</label>
+    <description>A highly advanced serum made from blight cells and glitterworld medicine. When administered, it sets immunity to blight infection to 100%, reduces severity by 50%, and grants full immunity for 36 hours.</description>
+    <graphicData>
+      <texPath>Things/Item/BlightCleanseSerum_Glitter</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>220</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.7</Flammability>
+      <MedicalPotency>1.6</MedicalPotency>
+      <MedicalQualityMax>1.0</MedicalQualityMax>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Use {0} to treat blight infection</useLabel>
+        <useDuration>180</useDuration>
+      </li>
+      <li Class="CompProperties_TargetEffect">
+        <compClass>ZombieBlight.CompTargetEffect_BlightSerum</compClass>
+      </li>
+    </comps>
+    <techLevel>Ultra</techLevel>
+    <costList>
+      <Item_BlightCells>2</Item_BlightCells>
+      <MedicineUltratech>1</MedicineUltratech>
+    </costList>
+  </ThingDef>
+
+  <!-- Определение химического вещества для сопротивления (для системы наркотиков) -->
+  <ChemicalDef>
+    <defName>BlightResistance</defName>
+    <label>blight resistance</label>
+    <addictionHediff>NULL</addictionHediff>
+    <canBingingCauseOverdose>false</canBingingCauseOverdose>
+  </ChemicalDef>
+
+</Defs>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <HediffDef>
+    <defName>Hediff_BlightFoodRestriction</defName>
+    <label>blight food restriction</label>
+    <description>Reduced eating rate due to blight infection.</description>
+    <defaultLabelColor>(0.8, 0.8, 0.35)</defaultLabelColor>
+    <makesSickThought>false</makesSickThought>
+    <tendable>false</tendable>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <statFactors>
+          <EatingSpeed>0.3</EatingSpeed>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>
